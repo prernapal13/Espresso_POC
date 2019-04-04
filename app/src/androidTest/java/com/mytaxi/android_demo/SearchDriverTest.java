@@ -42,16 +42,18 @@ public class SearchDriverTest extends BaseTest {
         onView(withId(R.id.drawer_layout)).perform(close());
 
         Log.i("@SEARCH DRIVER", "Search driver by " + searchString + ", Select the 2nd result.");
-        onView(withId(R.id.textSearch)).perform(typeText("sa"));
+        onView(withId(R.id.textSearch)).perform(typeText(searchString));
+
+        String driverName = getDriverNameAtIndex(2);  // get 2nd driver dynamically from autocomplete dropdown list.
         onView(withText(driverName))
                 .inRoot(withDecorView(not(is(mainActivityTestRule.getActivity().getWindow().getDecorView()))))
                 .check(matches(isDisplayed())).perform(click());
 
-        Log.i("#DRIVER VERIFICATION",
+        Log.i("@DRIVER VERIFICATION",
                 "Verify selected driver's (" + driverName + ") name on Driver Profile Page.");
         onView(withId(R.id.textViewDriverName)).check(matches(withText(driverName)));
 
-        Log.i("#CALLING DRIVER", "Click on call button on Driver Profile Page.");
+        Log.i("@CALLING DRIVER", "Click on call button on Driver Profile Page.");
         onView(withId(R.id.fab)).check(matches(isClickable())).perform(ViewActions.click());
 
     }

@@ -4,8 +4,12 @@ import android.content.Context;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.util.Log;
+import android.widget.AutoCompleteTextView;
+import android.widget.ListAdapter;
 
+import com.mytaxi.android_demo.R;
 import com.mytaxi.android_demo.activities.MainActivity;
+import com.mytaxi.android_demo.models.Driver;
 import com.mytaxi.android_demo.utils.SimpleCountingIdlingResource;
 
 import org.junit.After;
@@ -31,13 +35,28 @@ public class BaseTest {
     protected static String username = "crazydog335";
     protected static String password = "venture";
     protected static String searchString = "sa";
-    protected static String driverName = "Sarah Scott";
+
+    private static final String API_URL = "https://randomuser.me/api/?seed=a1f30d446f820665";
+
+    private AutoCompleteTextView mAutoCompleteTextView = null;
+    private ListAdapter mListAdapter = null;
 
     @Before
     public void setUp() {
         mainActivityTestRule.launchActivity(null);
         mainActivity = mainActivityTestRule.getActivity();
         getInstance().register(SimpleCountingIdlingResource.getIdlingResource());
+    }
+
+    protected String getDriverNameAtIndex(int index) {
+
+        mAutoCompleteTextView = mainActivity.findViewById(R.id.textSearch);
+        mListAdapter = this.mAutoCompleteTextView.getAdapter();
+
+        String driverName = ((Driver) mListAdapter.getItem(--index)).getName();
+        Log.i("@GET DRIVER NAME: ", "Driver " + driverName + " present at index " + ++index);
+
+        return driverName;
     }
 
     private void resetApp() {
