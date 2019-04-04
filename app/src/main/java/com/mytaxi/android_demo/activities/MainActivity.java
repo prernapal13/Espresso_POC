@@ -130,9 +130,9 @@ public class MainActivity extends AuthenticatedActivity
                     @Override
                     public void run() {
                         mSearchView.setAdapter(mAdapter);
-                        SimpleCountingIdlingResource.decrement();
                     }
                 });
+                SimpleCountingIdlingResource.decrement();
             }
         });
     }
