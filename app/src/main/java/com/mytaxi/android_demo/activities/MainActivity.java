@@ -116,6 +116,7 @@ public class MainActivity extends AuthenticatedActivity
 
         mSearchView = findViewById(R.id.textSearch);
         mSearchView.setDropDownAnchor(R.id.searchContainer);
+        SimpleCountingIdlingResource.increment();
         mHttpClient.fetchDrivers(new HttpClient.DriverCallback() {
             @Override
             public void run() {
@@ -129,6 +130,7 @@ public class MainActivity extends AuthenticatedActivity
                     @Override
                     public void run() {
                         mSearchView.setAdapter(mAdapter);
+                        SimpleCountingIdlingResource.decrement();
                     }
                 });
             }

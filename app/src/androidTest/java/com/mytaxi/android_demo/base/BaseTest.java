@@ -51,7 +51,7 @@ public class BaseTest {
     protected String getDriverNameAtIndex(int index) {
 
         mAutoCompleteTextView = mainActivity.findViewById(R.id.textSearch);
-        mListAdapter = this.mAutoCompleteTextView.getAdapter();
+        mListAdapter = mAutoCompleteTextView.getAdapter();
 
         String driverName = ((Driver) mListAdapter.getItem(--index)).getName();
         Log.i("@GET DRIVER NAME: ", "Driver " + driverName + " present at index " + ++index);
