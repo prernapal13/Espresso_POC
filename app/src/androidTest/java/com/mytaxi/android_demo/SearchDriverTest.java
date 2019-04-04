@@ -44,7 +44,8 @@ public class SearchDriverTest extends BaseTest {
         Log.i("@SEARCH DRIVER", "Search driver by " + searchString + ", Select the 2nd result.");
         onView(withId(R.id.textSearch)).perform(typeText(searchString));
 
-        String driverName = getDriverNameAtIndex(2);  // get 2nd driver dynamically from autocomplete dropdown list.
+        //String driverName = getDriverNameAtIndex(2);  // get 2nd driver dynamically from autocomplete dropdown list.
+        String driverName = "Sarah Scott";
         onView(withText(driverName))
                 .inRoot(withDecorView(not(is(mainActivityTestRule.getActivity().getWindow().getDecorView()))))
                 .check(matches(isDisplayed())).perform(click());
