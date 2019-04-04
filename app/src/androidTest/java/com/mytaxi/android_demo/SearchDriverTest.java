@@ -31,19 +31,20 @@ public class SearchDriverTest extends BaseTest {
 
     @Test
     public void testSearchAndCallDriver() {
-
-        Log.i("@LOGIN", "Login into myTaxi App, & verifying successful login.");
+        Log.i("@LOGIN", "Login into myTaxi App");
         onView(withId(R.id.edt_username)).perform(typeText(loginCredentialMap.get("username")));
         onView(withId(R.id.edt_password)).perform(typeText(loginCredentialMap.get("password")));
         onView(withId(R.id.btn_login)).perform(click());
 
+        Log.i("@VERIFY SUCCESSFUL LOGIN", "Verify username in drawer layout and close drawer layout after verification");
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withId(R.id.nav_username)).check(matches(withText(loginCredentialMap.get("username"))));
         onView(withId(R.id.drawer_layout)).perform(close());
 
-        Log.i("@SEARCH DRIVER", "Search driver by " + searchString + ", Select the 2nd result.");
+        Log.i("@SEARCH DRIVER", "Search driver by " + searchString);
         onView(withId(R.id.textSearch)).perform(typeText(searchString));
 
+        Log.i("@SELECT SECOND DRIVER", "Fetch 2nd driver name from autocomplete dropdown and select");
         String driverName = getDriverNameAtIndex(2);  // get 2nd driver dynamically from autocomplete dropdown list.
         onView(withText(driverName))
                 .inRoot(withDecorView(not(is(mainActivityTestRule.getActivity().getWindow().getDecorView()))))
@@ -55,7 +56,5 @@ public class SearchDriverTest extends BaseTest {
 
         Log.i("@CALLING DRIVER", "Click on call button on Driver Profile Page.");
         onView(withId(R.id.fab)).check(matches(isClickable())).perform(ViewActions.click());
-
     }
-
 }

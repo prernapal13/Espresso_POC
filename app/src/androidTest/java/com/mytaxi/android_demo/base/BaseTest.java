@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Rule;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,17 +39,16 @@ public class BaseTest {
     public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     private MainActivity mainActivity = null;
+    private static final String API_URL = "https://randomuser.me/api/?seed=a1f30d446f820665";
+    private AutoCompleteTextView mAutoCompleteTextView = null;
+    private ListAdapter mListAdapter = null;
 
     protected static Map<String, String> loginCredentialMap;
     protected static String searchString = "sa";
 
-    private static final String API_URL = "https://randomuser.me/api/?seed=a1f30d446f820665";
-
-    private AutoCompleteTextView mAutoCompleteTextView = null;
-    private ListAdapter mListAdapter = null;
-
     @Before
     public void setUp() {
+        Log.i("@SETUP: ", "Setting up pre-requisites before test execution");
         getCredentials();
         mainActivityTestRule.launchActivity(null);
         mainActivity = mainActivityTestRule.getActivity();
@@ -58,38 +56,33 @@ public class BaseTest {
     }
 
     private void getCredentials() {
-
         loginCredentialMap = new HashMap<String, String>();
         try {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(API_URL).build();
             Response response = client.newCall(request).execute();
             String jsonData = response.body().string();
-
             JSONArray resultsArray = new JSONObject(jsonData).getJSONArray("results");
             JSONObject loginObject = resultsArray.getJSONObject(0).getJSONObject("login");
-
             loginCredentialMap.put("username", loginObject.getString("username"));
             loginCredentialMap.put("password", loginObject.getString("password"));
-
+            Log.i("@GET CREDENTIALS: ", "Fetched username and password " + loginCredentialMap);
         } catch (Exception ex) {
             Log.e("@GET CREDENTIALS: ", "Exception occurs at fetching credentials via api - " + ex.getMessage());
         }
     }
 
     protected String getDriverNameAtIndex(int index) {
-
+        Log.i("@FETCH DRIVER NAME: ", "Fetching driver name at index " + index + "from autocomplete textview");
         mAutoCompleteTextView = mainActivity.findViewById(R.id.textSearch);
         mListAdapter = mAutoCompleteTextView.getAdapter();
-
         String driverName = ((Driver) mListAdapter.getItem(--index)).getName();
-        Log.i("@GET DRIVER NAME: ", "Driver " + driverName + " present at index " + ++index);
-
+        Log.i("@DRIVER NAME: ", "Driver name retrieved is " + driverName);
         return driverName;
     }
 
     private void resetApp() {
-        Log.e("@RE-SETTING APP: ", "resetting app.");
+        Log.i("@RE-SETTING APP: ", "resetting app.");
         try {
             File root = getTargetContext().getFilesDir().getParentFile();
             String[] sharedPreferencesFileNames = new File(root, "shared_prefs").list();
@@ -103,9 +96,9 @@ public class BaseTest {
     }
 
     @After
-    public void tearDown() throws IOException {
+    public void tearDown() {
+        Log.i("@TEARDOWN: ", "Cleaning up after test execution");
         getInstance().unregister(SimpleCountingIdlingResource.getIdlingResource());
         resetApp();
     }
-
 }
