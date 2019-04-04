@@ -33,12 +33,12 @@ public class SearchDriverTest extends BaseTest {
     public void testSearchAndCallDriver() {
 
         Log.i("@LOGIN", "Login into myTaxi App, & verifying successful login.");
-        onView(withId(R.id.edt_username)).perform(typeText(username));
-        onView(withId(R.id.edt_password)).perform(typeText(password));
+        onView(withId(R.id.edt_username)).perform(typeText(loginCredentialMap.get("username")));
+        onView(withId(R.id.edt_password)).perform(typeText(loginCredentialMap.get("password")));
         onView(withId(R.id.btn_login)).perform(click());
 
         onView(withId(R.id.drawer_layout)).perform(open());
-        onView(withId(R.id.nav_username)).check(matches(withText(username)));
+        onView(withId(R.id.nav_username)).check(matches(withText(loginCredentialMap.get("username"))));
         onView(withId(R.id.drawer_layout)).perform(close());
 
         Log.i("@SEARCH DRIVER", "Search driver by " + searchString + ", Select the 2nd result.");
